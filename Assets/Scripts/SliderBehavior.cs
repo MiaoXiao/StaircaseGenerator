@@ -11,15 +11,8 @@ public class SliderBehavior : MonoBehaviour
     //Which variable to update in GenerateStaircase Script
     public int variableToUpdate;
 
-    //Script to access staircase modifiers
-    GenerateStaircase GenerateStaircaseScript;
-
     void Start()
     {
-        //Get access to GenerateStaircase script
-        GameObject g = GameObject.FindGameObjectWithTag("Generation");
-        GenerateStaircaseScript = g.GetComponent<GenerateStaircase>();
-
         //Update UI to default values
         updateUI(variableToUpdate);
     }
@@ -32,13 +25,13 @@ public class SliderBehavior : MonoBehaviour
         switch (variableToUpdate)
         {
             case (int)StairVariables.Length:
-                value = GenerateStaircaseScript.length;
+                value = GenerateStaircase.length;
                 break;
             case (int)StairVariables.Width:
-                value = GenerateStaircaseScript.width;
+                value = GenerateStaircase.width;
                 break;
             case (int)StairVariables.Height:
-                value = GenerateStaircaseScript.height;
+                value = GenerateStaircase.height;
                 break;
         }
         
@@ -54,13 +47,13 @@ public class SliderBehavior : MonoBehaviour
         switch (modifier)
         {
             case (int)StairVariables.Length:
-                GenerateStaircaseScript.length = (int)value;
+                GenerateStaircase.length = (int)value;
                 break;
             case (int)StairVariables.Width:
-                GenerateStaircaseScript.width = (int)value;
+                GenerateStaircase.width = (int)value;
                 break;
             case (int)StairVariables.Height:
-                GenerateStaircaseScript.height = (int)value;
+                GenerateStaircase.height = (int)value;
                 break;
         }
     }
