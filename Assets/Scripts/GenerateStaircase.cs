@@ -9,13 +9,10 @@ public class GenerateStaircase : MonoBehaviour
     public GameObject stairClone;
     //Value to rotate each stair
     public int stairRotation;
-    //Simulate ball or not
-    public bool simulateBall;
-
 
     //Array for holding all current stair objects
-    GameObject[] allStairs;
-
+    public static GameObject[] allStairs;
+   
     //Stair modifiers
     public static int length = -1;
     public static int width;
@@ -28,11 +25,17 @@ public class GenerateStaircase : MonoBehaviour
     public int setHeight;
     public int setStairCount;
 
+    //Access to ball physics script
+    BallPhysics bp;
+
     void Awake()
     {
+        //Get ball physics script
+        bp = GameObject.FindGameObjectWithTag("Ball").GetComponent<BallPhysics>();
+
+        //Assign default values
         if (length == -1)
-        {        
-            //Assign default values
+        {         
             length = setLength;
             width = setWidth;
             height = setHeight;
@@ -83,27 +86,8 @@ public class GenerateStaircase : MonoBehaviour
         stairClone.transform.position = new Vector3(0, 0, 0);
         stairClone.transform.localRotation = new Quaternion(0, 0, 0, 0);
 
+        //Attempt to start ball
+        bp.startBall();
     }
-
-    void simulate()
-    {
-
-    }
-
-    void FixedUpdate()
-    {
-
-    }
-
-    //Given index i, assigns that stair in array allStairs a random color
-    void giveStairRandomColor(int i)
-    {
-        //Get mesh renderer of stair i
-        MeshRenderer meshRenderer = allStairs[i].transform.GetChild(0).GetComponent<MeshRenderer>();
-
-        //Create random color
-        Color c = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value);
-        //Assign color to stair
-        meshRenderer.material.color = c;
-    }
+    
 }
