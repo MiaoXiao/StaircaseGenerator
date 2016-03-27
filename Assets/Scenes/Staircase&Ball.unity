@@ -251,27 +251,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22467034, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22426130, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22460668, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22411290, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22465684, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22411180, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22471804, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_LocalScale.x
@@ -284,6 +284,14 @@ Prefab:
     - target: {fileID: 22471804, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
       propertyPath: m_LocalScale.y
       value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11402410, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
+      propertyPath: variableToUpdate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11498486, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
+      propertyPath: variableToUpdate
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f7576e200d610fa40ad84ce02cf97d55, type: 2}
@@ -557,7 +565,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stairClone: {fileID: 2143836354}
-  stairRotation: 20
+  stairRotation: 15
+  simulateBall: 0
   setLength: 10
   setWidth: 5
   setHeight: 1
@@ -586,6 +595,7 @@ GameObject:
   - 124: {fileID: 1731754229}
   - 92: {fileID: 1731754228}
   - 81: {fileID: 1731754227}
+  - 114: {fileID: 1731754232}
   m_Layer: 0
   m_Name: MainCamera
   m_TagString: MainCamera
@@ -660,6 +670,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &1731754232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1731754226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082605425968ed847849d8a48614e768, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2142762527
 GameObject:
   m_ObjectHideFlags: 0

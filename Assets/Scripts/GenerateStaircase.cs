@@ -7,16 +7,17 @@ public class GenerateStaircase : MonoBehaviour
 {
     //Original stair cube, used for instantiating and its start position
     public GameObject stairClone;
-    //Ball for bouncing
-    GameObject ball;
     //Value to rotate each stair
     public int stairRotation;
+    //Simulate ball or not
+    public bool simulateBall;
+
 
     //Array for holding all current stair objects
     GameObject[] allStairs;
 
     //Stair modifiers
-    public static int length;
+    public static int length = -1;
     public static int width;
     public static int height;
     public static int stairCount;
@@ -27,13 +28,16 @@ public class GenerateStaircase : MonoBehaviour
     public int setHeight;
     public int setStairCount;
 
-    void Start()
+    void Awake()
     {
-        //Assign default values
-        length = setLength;
-        width = setWidth;
-        height = setHeight;
-        stairCount = setStairCount;
+        if (length == -1)
+        {        
+            //Assign default values
+            length = setLength;
+            width = setWidth;
+            height = setHeight;
+            stairCount = setStairCount;
+        }
 
         //Set size of stair list
         allStairs = new GameObject[stairCount];
@@ -67,13 +71,13 @@ public class GenerateStaircase : MonoBehaviour
             //Move stair position down, forwards, and rotate it
             currPosition.transform.Translate(Vector3.down * height);
             currPosition.transform.Translate(Vector3.forward * (width / 2));
-            currPosition.transform.Rotate(0, stairRotation, 0);
+            currPosition.transform.Rotate(0, Mathf.Sqrt(length), 0);
 
             //Create the new stair in the current position and rotation
             allStairs[i] = (GameObject)Instantiate(stairClone, currPosition.transform.position, currPosition.transform.rotation);
         }
         
-        //Hidest stair clone
+        //Hides stair clone
         stairClone.SetActive(false);
         //Set stair clone back to original position/rotation
         stairClone.transform.position = new Vector3(0, 0, 0);
@@ -81,8 +85,7 @@ public class GenerateStaircase : MonoBehaviour
 
     }
 
-    //Simulate ball physics
-    void simulateBall()
+    void simulate()
     {
 
     }
