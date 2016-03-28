@@ -335,7 +335,7 @@ GameObject:
   - 114: {fileID: 11445418}
   - 114: {fileID: 11495776}
   m_Layer: 5
-  m_Name: Button_Staircase&Ball
+  m_Name: Button_Staircase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1065,7 +1065,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 0
@@ -1240,7 +1240,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Staircase&Ball
+          m_StringArgument: Staircase
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1563,9 +1563,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 4
-  m_Text: 'Staircase
-
-'
+  m_Text: Staircase & Ball
 --- !u!114 &11466966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1633,11 +1631,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Staircase
-
-    &
-
-    Ball'
+  m_Text: Staircase
 --- !u!114 &11477428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2637,8 +2631,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.8}
-  m_SizeDelta: {x: 42.1, y: 22.8}
+  m_AnchoredPosition: {x: 0.009465814, y: -0.4999184}
+  m_SizeDelta: {x: 48.957, y: 20.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22451502
 RectTransform:

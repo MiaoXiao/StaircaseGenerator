@@ -12,17 +12,15 @@ public class BallPhysics : MonoBehaviour
 
     //Index of next stair to jump to
     int stairTarget;
-
     //Angle in radians
     float radAngle;
-
     //Gravity
     float gravity = -Physics.gravity.y;
 
     //Rigid body of ball
     Rigidbody rb;
 
-    void Start()
+    void Awake()
     {
         //Get rigidbody
         rb = transform.GetComponent<Rigidbody>();
@@ -36,6 +34,10 @@ public class BallPhysics : MonoBehaviour
         if (simulateBall)
         {
             Debug.Log("Starting ball..");
+
+            //Remove all momentum from previous ball
+            rb.velocity = new Vector3(0, 0, 0);
+            rb.angularVelocity = new Vector3(0, 0, 0);
 
             //Get top of stair
             Transform stairTop = GenerateStaircase.allStairs[0].transform.GetChild(1);
@@ -51,7 +53,12 @@ public class BallPhysics : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
         giveObjectRandomColor(col.gameObject);
-        if (simulateBall) launchBall();
+        //Launch the ball, unless it is the last stair.
+        if (stairTarget != GenerateStaircase.allStairs.Length) launchBall();
+        else
+        {
+            resetBall();
+        }
     }
 
     //Launch the ball from stairA to stairB
@@ -64,38 +71,30 @@ public class BallPhysics : MonoBehaviour
         //Get the landing location
         Vector3 endPos = GenerateStaircase.allStairs[stairTarget].transform.GetChild(1).position;
 
-        //Debug.DrawLine(startPos, endPos, Color.blue, 20f, false);
+        Debug.DrawLine(startPos, endPos, Color.blue, 3f, false);
 
         //Have ball face towards the next stair
-        Vector3 targetPosition = endPos;
-        targetPosition.y = transform.position.y;
-        this.transform.LookAt(targetPosition);
+        Vector3 faceTarget = endPos;
+        faceTarget.y = transform.position.y;
+        this.transform.LookAt(faceTarget);
 
-        //Distance between ball and next stair
-        float distance = Vector3.Distance(startPos, endPos);
+        //Get distance between start and end points, in terms of x and z
+        Vector3 endPosTemp = new Vector3(endPos.x, 0, endPos.z);
+        Vector3 startPosTemp = new Vector3(startPos.x, 0, startPos.z);
+        float distance = Vector3.Distance(startPosTemp, endPosTemp);
 
         //Get initial velocity
-        float vi = Mathf.Sqrt(distance * gravity / (Mathf.Sin(radAngle * 2)));
+        //http://physics.stackexchange.com/questions/27992/solving-for-initial-velocity-required-to-launch-a-projectile-to-a-given-destinat
+        float vi = (1 / Mathf.Cos(radAngle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(radAngle) + GenerateStaircase.height));
         //Get velocity y and z components
         float vy = vi * Mathf.Sin(radAngle);
         float vz = vi * Mathf.Cos(radAngle);
 
-        //Get final velocity
+        //Get final velocity and apply it
         Vector3 vf = transform.TransformVector(new Vector3(0, vy, vz));
-
         rb.velocity = vf;
 
-        //If the next stair exists, increment stair index, else turn off simulation
-        if (stairTarget + 1 != GenerateStaircase.allStairs.Length)
-        {
-            stairTarget++;
-        }
-        else
-        {
-            simulateBall = false;
-        }
-
-
+        stairTarget++;
     }
 
     //Assigns the given object a random color
