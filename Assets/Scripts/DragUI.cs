@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Handles dragging of UI elements
 public class DragUI : MonoBehaviour
 {
     static Vector2 uiPosition = new Vector2(-1, -1);

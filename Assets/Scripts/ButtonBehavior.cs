@@ -2,6 +2,7 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
+//Controls button behaviour
 public class ButtonBehavior : MonoBehaviour {
 
     //Changes current scene to scene_name

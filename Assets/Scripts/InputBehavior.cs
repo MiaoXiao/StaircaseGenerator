@@ -2,9 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
+//Handles Input box behavior, and updates variables in Generate Staircase script
 public class InputBehavior : MonoBehaviour
 {
-
     void Start()
     {
         //Set text to default value

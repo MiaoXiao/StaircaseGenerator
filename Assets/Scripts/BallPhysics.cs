@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Controls the physics for the ball
 public class BallPhysics : MonoBehaviour
 {
     //Simulate ball or not
@@ -12,6 +13,7 @@ public class BallPhysics : MonoBehaviour
 
     //Index of next stair to jump to
     int stairTarget;
+
     //Angle in radians
     float radAngle;
     //Gravity
@@ -20,10 +22,15 @@ public class BallPhysics : MonoBehaviour
     //Rigid body of ball
     Rigidbody rb;
 
+    //Camera Panning script
+    CameraPanning cp;
+
     void Awake()
     {
         //Get rigidbody
         rb = transform.GetComponent<Rigidbody>();
+        //Get camera panning script
+        cp = GameObject.FindGameObjectWithTag("MainCamera").transform.GetComponent<CameraPanning>();
         //Get angle in radians
         radAngle = initialAngle * Mathf.Deg2Rad;
     }
@@ -33,7 +40,10 @@ public class BallPhysics : MonoBehaviour
     {
         if (simulateBall)
         {
-            Debug.Log("Starting ball..");
+            //Debug.Log("Starting ball..");
+
+            //Reset camera
+            cp.resetCamera();
 
             //Remove all momentum from previous ball
             rb.velocity = new Vector3(0, 0, 0);
@@ -54,7 +64,10 @@ public class BallPhysics : MonoBehaviour
     {
         giveObjectRandomColor(col.gameObject);
         //Launch the ball, unless it is the last stair.
-        if (stairTarget != GenerateStaircase.allStairs.Length) launchBall();
+        if (stairTarget != GenerateStaircase.allStairs.Length)
+        {
+            launchBall();
+        }
         else
         {
             resetBall();
@@ -64,7 +77,7 @@ public class BallPhysics : MonoBehaviour
     //Launch the ball from stairA to stairB
     void launchBall()
     {
-        Debug.Log("Launching ball to stair: " + stairTarget);
+        //Debug.Log("Launching ball to stair: " + stairTarget);
 
         //Get start position
         Vector3 startPos = this.transform.position;

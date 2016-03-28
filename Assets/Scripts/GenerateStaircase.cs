@@ -3,12 +3,14 @@ using UnityEngine.UI;
 using System.Collections;
 using System;
 
+//Utilities for generating the staircase
 public class GenerateStaircase : MonoBehaviour
 {
     //Original stair cube, used for instantiating and its start position
     public GameObject stairClone;
+
     //Value to rotate each stair
-    public int stairRotation;
+    int stairRotation = 0;
 
     //Array for holding all current stair objects
     public static GameObject[] allStairs;
@@ -68,16 +70,27 @@ public class GenerateStaircase : MonoBehaviour
         //Show stair clone, only for instantiating
         stairClone.SetActive(true);
 
+        stairRotation = 0;
+
         //Create staircase, given stair count
         for (int i = 0; i < stairCount; ++i)
         {
             //Move stair position down, forwards, and rotate it
             currPosition.transform.Translate(Vector3.down * height);
             currPosition.transform.Translate(Vector3.forward * (width / 2));
-            currPosition.transform.Rotate(0, Mathf.Sqrt(length), 0);
+            currPosition.transform.Rotate(0, stairRotation, 0);
 
             //Create the new stair in the current position and rotation
             allStairs[i] = (GameObject)Instantiate(stairClone, currPosition.transform.position, currPosition.transform.rotation);
+            
+            //After creating the second stair, find the stair rotation to be used for all stairs
+            if (i == 1)
+            {
+                stairRotation = getCorrectAngle(i);
+                //Apply the new rotation to the second stair
+                allStairs[i].transform.Rotate(0, stairRotation, 0);
+                currPosition.transform.Rotate(0, stairRotation, 0);
+            }
         }
         
         //Hides stair clone
@@ -89,5 +102,26 @@ public class GenerateStaircase : MonoBehaviour
         //Attempt to start ball
         bp.resetBall();
     }
-    
+
+    //Get the correct angle to rotate each stair
+    int getCorrectAngle(int i)
+    {
+        //Debug.Log("Looking for angle");
+        int angle = 0;
+        while (angle < 90)
+        {
+            //Rotate stair by 1 unit
+            allStairs[i].transform.Rotate(0, 1, 0);
+            //Compare the z position of stair i and i - 1 to see if we have rotated far enough
+            if (allStairs[i].transform.GetChild(3).transform.position.z > allStairs[i - 1].transform.GetChild(2).transform.position.z)
+            {
+                allStairs[i].transform.rotation = new Quaternion(0, 0, 0, 0);
+                return angle;
+            }
+            angle++;
+
+        }
+        Debug.Log("ERROR");
+        return angle;
+    }
 }

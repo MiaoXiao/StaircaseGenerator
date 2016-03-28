@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
+//Controls slider behavior, and updates static variables in GenerateStaircase script
 public class SliderBehavior : MonoBehaviour
 {
     enum StairVariables {Length, Width, Height};
