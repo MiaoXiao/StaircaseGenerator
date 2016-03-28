@@ -19,7 +19,7 @@ public class BallPhysics : MonoBehaviour
     //Gravity
     float gravity = -Physics.gravity.y;
 
-    //Rigid body of ball
+    //Rigid body of ball, for calling resetCamera()
     Rigidbody rb;
 
     //Camera Panning script
