@@ -4,19 +4,20 @@ using System.Collections;
 public class BallPhysics : MonoBehaviour
 {
     //Simulate ball or not
-    public bool simulateBall = false;
+    public bool simulateBall;
     //Launch angle
-    public float angle = 70f;
+    public float initialAngle;
+    //First drop height
+    public float dropHeight;
 
-    //Indexes of stairs
-    int stairA = 0;
-    int stairB = 1;
+    //Index of next stair to jump to
+    int stairTarget;
 
-    //Distance between stairA and stairB
-    float distance;
+    //Angle in radians
+    float radAngle;
 
     //Gravity
-    float gravity = Physics.gravity.magnitude;
+    float gravity = -Physics.gravity.y;
 
     //Rigid body of ball
     Rigidbody rb;
@@ -25,22 +26,24 @@ public class BallPhysics : MonoBehaviour
     {
         //Get rigidbody
         rb = transform.GetComponent<Rigidbody>();
+        //Get angle in radians
+        radAngle = initialAngle * Mathf.Deg2Rad;
     }
 
-    //Move ball to correct place, and unhide ball
-    public void startBall()
+    //Reset ball to top of first stair
+    public void resetBall()
     {
         if (simulateBall)
         {
             Debug.Log("Starting ball..");
 
-            //Get child of first stair
-            Transform sc = GenerateStaircase.allStairs[0].transform.GetChild(0);
-            //Move ball above first step
-            this.transform.position = sc.position + new Vector3(0, (GenerateStaircase.height / 2) + 5, GenerateStaircase.width / 4);
+            //Get top of stair
+            Transform stairTop = GenerateStaircase.allStairs[0].transform.GetChild(1);
 
-            stairA = 0;
-            stairB = 1;
+            //Move ball above first step
+            transform.position = stairTop.position + new Vector3(0, dropHeight, 0);
+
+            stairTarget = 1;
         }
     }
 
@@ -48,52 +51,51 @@ public class BallPhysics : MonoBehaviour
     void OnCollisionEnter(Collision col)
     {
         giveObjectRandomColor(col.gameObject);
-        launchBall();
+        if (simulateBall) launchBall();
     }
 
     //Launch the ball from stairA to stairB
     void launchBall()
     {
-        Debug.Log("Launching ball");
+        Debug.Log("Launching ball to stair: " + stairTarget);
 
-        Vector3 startPos = transform.position;
-        Vector3 endPos = GenerateStaircase.allStairs[stairB].transform.position + new Vector3(0, GenerateStaircase.height / 2, GenerateStaircase.width / 4);
-        distance = Vector3.Distance(startPos, endPos);
+        //Get start position
+        Vector3 startPos = this.transform.position;
+        //Get the landing location
+        Vector3 endPos = GenerateStaircase.allStairs[stairTarget].transform.GetChild(1).position;
 
-        // Calculate the velocity needed to throw the object to the target at specified angle.
-        float v0 = distance / (Mathf.Sin(2 * angle * Mathf.Deg2Rad) / gravity);
-        Vector3 finalVelocity = new Vector3(0, v0 * Mathf.Sin(angle), v0 * Mathf.Cos(angle));
+        //Debug.DrawLine(startPos, endPos, Color.blue, 20f, false);
 
-        // Extract the X  Y componenent of the velocity
-        float vx = Mathf.Sqrt(v0) * Mathf.Cos(angle * Mathf.Deg2Rad);
-        float vy = Mathf.Sqrt(v0) * Mathf.Sin(angle * Mathf.Deg2Rad);
+        //Have ball face towards the next stair
+        Vector3 targetPosition = endPos;
+        targetPosition.y = transform.position.y;
+        this.transform.LookAt(targetPosition);
 
-        //this.transform.rotation = Quaternion.LookRotation(endPos - startPos);
+        //Distance between ball and next stair
+        float distance = Vector3.Distance(startPos, endPos);
 
-        rb.AddForce(new Vector3(0, vx, vy), ForceMode.Impulse);
-        /*
-        //Get start and end points to launch between
-        Vector3 startPos = GenerateStaircase.allStairs[stairA].transform.position + new Vector3(0, GenerateStaircase.height / 2, GenerateStaircase.width / 4);
-        Vector3 endPos = GenerateStaircase.allStairs[stairB].transform.position + new Vector3(0, GenerateStaircase.height / 2, GenerateStaircase.width / 4);
-        //Distance between those points
-        distance = Vector3.Distance(startPos, endPos);
+        //Get initial velocity
+        float vi = Mathf.Sqrt(distance * gravity / (Mathf.Sin(radAngle * 2)));
+        //Get velocity y and z components
+        float vy = vi * Mathf.Sin(radAngle);
+        float vz = vi * Mathf.Cos(radAngle);
 
-        //Positions of this object and the target on the same plane
-        //Vector3 planarTarget = new Vector3(endPos.x, 0, endPos.z);
-        //Vector3 planarPostion = new Vector3(transform.position.x, 0, transform.position.z);
+        //Get final velocity
+        Vector3 vf = transform.TransformVector(new Vector3(0, vy, vz));
 
-        //Initial velocity
-        float v0 = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) - GenerateStaircase.height));
-        //Velocity vector
-        Vector3 v = new Vector3(0, v0 * Mathf.Sin(angle), v0 * Mathf.Cos(angle));
-        //Get direction of launch
-        float angleBetweenObjects = Vector3.Angle(Vector3.forward, endPos - startPos);
-        Vector3 vf = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * v;
+        rb.velocity = vf;
 
-        rb.velocity = vf;*/
-        stairA++;
-        stairB++;
-        
+        //If the next stair exists, increment stair index, else turn off simulation
+        if (stairTarget + 1 != GenerateStaircase.allStairs.Length)
+        {
+            stairTarget++;
+        }
+        else
+        {
+            simulateBall = false;
+        }
+
+
     }
 
     //Assigns the given object a random color

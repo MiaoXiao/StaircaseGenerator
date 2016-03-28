@@ -87,7 +87,7 @@ public class GenerateStaircase : MonoBehaviour
         stairClone.transform.localRotation = new Quaternion(0, 0, 0, 0);
 
         //Attempt to start ball
-        bp.startBall();
+        bp.resetBall();
     }
     
 }
